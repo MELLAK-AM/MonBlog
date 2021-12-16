@@ -6,5 +6,5 @@ import fr.formation.monBlog.entities.Article;
 
 
 public interface ArticleRepository extends MongoRepository<Article, String> {
-
+Article findBySlug(String slug);
 }

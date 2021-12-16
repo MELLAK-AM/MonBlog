@@ -17,57 +17,68 @@ import fr.formation.monBlog.entities.Article;
 import fr.formation.monBlog.services.ArticleService;
 
 
-
 @RestController
 @RequestMapping("articles")
 public class ArticlesControllers {
-
-	
+/**
+ * Initialiser une variable d'instance qui contient le service
+ */
 	ArticleService service;
-	//IOD
+/**
+ * Injection de la dépendance ArticleService qui va permettre grâce à SPRING de récupérer une instance ArticleService
+ * @param service
+ */
 	public ArticlesControllers(ArticleService service) {
-		super();
 		this.service = service;
 	}
 
 
-	//GET "/articles" -> retourne une List<Article>
+	/**
+	 * Retourner une list d'article
+	 * @return
+	 */
 	@GetMapping
 	public List<Article> findAll() {
 		return service.findAll();
 	}
 	
 	
-	//GET "/articles/[SLUG]" -> retourne un article avec son slug
-	@GetMapping("{slug}") //http://localhost:80/articles/hello/slug
-	public String findBySlug(@PathVariable String slug ) {
-		return "article retourné avec un :" + slug;
+	/**
+	 * Retourner un article par son slug
+	 * @param slug
+	 * @return
+	 */
+	@GetMapping("{slug}") 
+	public Article findBySlug(@PathVariable String slug ) {
+		return this.service.findBySlug(slug);
 	}
-	
-	
-	//POST "/articles" -> retourne l'article que l'on vient de créer /On doit passer un article dans la requête
-	 @PostMapping("post")
-	 public List<Article> jePost() {
-		 return service.findAll();
-	 }
-	 
 
-	 @PostMapping
-	public String Post(@RequestBody Article article) {
-	    return  "Mon article" + article.getTitle() +" "+ article.getSlug();
-	 }
-	 
-	 //PUT "/articles" -> retourne l'article que l'on vient de mettre à jours On doit passer l'article à modifier dans la requête*
-	 @PutMapping("update")
-	 public String update(@RequestBody Article article) {
-		 return "mettre à jour l'article";
-	 }
-	 
-	 
-	 //- DELETE "/articles" -> Retourne rien mais supprime l'article passé dans la request
-	 @DeleteMapping("delete")
-	 public Article delete(@RequestBody Article article) {
-		 //return "l'article est supprimé";
-	 }
+    /**
+     * Méthode qui permet de sauvegarder un article
+     * @param article Article
+     * @return String
+     */
+    @PostMapping
+    public Article save(@RequestBody Article article) {
+        return this.service.save(article);
+    }
 
+    /**
+     * Méthode qui permet de mettre à jour un article
+     * @param article Article
+     * @return String
+     */
+    @PutMapping
+    public Article update(@RequestBody Article article) {
+        return this.service.save(article);
+    }
+
+    /**
+     * Méthode qui permet de supprimer un article
+     * @param article Article
+     */
+    @DeleteMapping
+    public void delete(@RequestBody Article article) {
+        this.service.delete(article);
+    }
 }

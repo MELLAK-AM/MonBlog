@@ -10,9 +10,8 @@ public class ArticleService {
 
 private List<Article> articles = new ArrayList<Article>();
 
-
-
 ArticleRepository repository;
+
 public ArticleService(ArticleRepository repository) {
 	this.repository = repository;
 }
@@ -29,7 +28,7 @@ public Article save(Article article) {
 	return this.repository.save(article);
 }
 
-public Article findBySlug(Article article) {
-	return this.repository.save(article);
+public Article findBySlug(String slug) {
+	return this.repository.findBySlug(slug);
 }
 }
